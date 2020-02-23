@@ -10,6 +10,11 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    age: {
+        type: Number,
+        required: true,
+        trim: true
+    },
     email: {
         type: String,
         required: true,
@@ -26,6 +31,10 @@ const userSchema = mongoose.Schema({
         required: true,
         minLength: 7
     },
+    location: {
+     lat: { type: String, Number: true, trim: true},
+     lng: { type: String, Number: true, trim: true}
+    },
     tokens: [{
         token: {
             type: String,
@@ -34,11 +43,12 @@ const userSchema = mongoose.Schema({
     }]
 })
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('insertData', async function (next) {
     // Hash the password before saving the user model
     const user = this
     if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8)
+      //for encrypting the password
+        //user.password = await bcrypt.hash(user.password, 8)
     }
     next()
 })
